@@ -1,19 +1,19 @@
-# 普通的k-v
-name: liyang
+# 对象的行内写法
+#person: {name: ly, age: 18, happy: true, }
 
-
-# 对象
-student:
+person:
   name: liyang
   age: 18
+  happy: false
+  birth: 2002/01/01
+  maps: {k1: v1,k2: v2}
+  lists:
+    - code
+    - game
+    - music
+  dog:
+    name: 旺旺
+    age: 1
 
-# 对象的行内写法
-person: {name: ly, age: 18}
-
-# 数组
-pets:
-  - cat
-  - dog
-  - tiger
-
-animals: [bird, lion, dolphin]
+users:
+  name: god

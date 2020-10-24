@@ -174,7 +174,7 @@ public class Springboot01HelloworldApplication {
 
 
 
-# 2 配置
+# 2 SpringBoot配置
 
 application.properties中可以有哪些配置？
 
@@ -214,45 +214,111 @@ animals: [bird, lion, dolphin]
 
 
 
+<img src="SpringBoot.assets/image-20201024105946800.png" alt="image-20201024105946800" style="zoom:50%;" />
 
 
 
+Configuring the Annotation Processor
 
+To use the processor, include a dependency on `spring-boot-configuration-processor`.
 
+With Maven the dependency should be declared as optional, as shown in the following example:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```java
-
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-configuration-processor</artifactId>
+    <optional>true</optional>
+</dependency>
 ```
 
 
 
+我们上面采用的yaml方法都是最简单的方式，开发中最常用的；也是springboot所推荐的！那我们来唠唠其他的实现方式，道理都是相同的；写还是那样写；配置文件除了yml还有我们之前常用的properties ， 我们没有讲，我们来唠唠！
 
+【注意】properties配置文件在写中文的时候，会有乱码 ， 我们需要去IDEA中设置编码格式为UTF-8；
+
+<img src="SpringBoot.assets/image-20201024112050871.png" alt="image-20201024112050871" style="zoom:50%;" />
+
+
+
+![image-20201024112135623](SpringBoot.assets/image-20201024112135623.png)
+
+
+
+
+
+其他注入方式
 
 ```java
+@Component //注册bean
+@ConfigurationProperties(prefix = "users")
+public class User {
+    //直接使用@value
+    @Value("${users.name}") // 从配置文件中取值，因为配置的@ConfigurationProperties，可以让其自动装配，因此可以省略
+    private String name;
+    @Value("#{9 * 2}")     // #{SPEL} Spring表达式
+    private int age;
+    @Value("男")           // 字面量
+    private String sex;
 
+    public User() {
+    }
+
+    public User(String name, int age, String sex) {
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                '}';
+    }
+}
 ```
 
+注意这里，prefix使用users定位yaml文件中的users，因为在META-INF下有一个红框文件，里面的内容有user.name这个字段，它会获取本机的user名字，导致自己的设置值不生效，所以使用users来对应yaml文件中的users，避免出现问题。
+
+<img src="SpringBoot.assets/image-20201024165303114.png" alt="image-20201024165303114" style="zoom:50%;" />	
+
+```json
+{
+  "properties": [
+    {
+      "name": "user.name",
+      "type": "java.lang.String",
+      "description": "Description for user.name."
+  }
+] }
+```
+
+另外，在配置的时候不要重复配置，因为存在优先级问题，所以有些使用@Value设定的会被yaml文件中的设定给覆盖！
