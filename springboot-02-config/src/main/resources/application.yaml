@@ -1,0 +1,19 @@
+# 普通的k-v
+name: liyang
+
+
+# 对象
+student:
+  name: liyang
+  age: 18
+
+# 对象的行内写法
+person: {name: ly, age: 18}
+
+# 数组
+pets:
+  - cat
+  - dog
+  - tiger
+
+animals: [bird, lion, dolphin]
