@@ -322,3 +322,204 @@ public class User {
 ```
 
 另外，在配置的时候不要重复配置，因为存在优先级问题，所以有些使用@Value设定的会被yaml文件中的设定给覆盖！
+
+
+
+yaml支持松散绑定，就是yaml中的first-name可以对应到类中的firstName。
+
+yaml文件内容
+
+```yaml
+person:
+  name: liyang
+  age: 18
+  happy: false
+  birth: 2002/01/01
+  maps: {k1: v1,k2: v2}
+  lists:
+    - code
+    - game
+    - music
+  dog:
+    name: 旺旺
+    age: 1
+
+users:
+  name: god
+
+
+student:
+  first-name: yang
+  last-name: li
+```
+
+
+
+**对比小结**
+
+@Value这个使用起来并不友好！我们需要为每个属性单独注解赋值，比较麻烦；我们来看个功能对比图
+
+![image-20201024173028102](SpringBoot.assets/image-20201024173028102.png)
+
+
+
+*   @ConfigurationProperties只需要写一次即可 ， @Value则需要每个字段都添加
+*   松散绑定：这个什么意思呢? 比如我的yml中写的last-name，这个和lastName是一样的， - 后面跟着的字母默认是大写的。这就是松散绑定。可以测试一下
+*   JSR303数据校验 ， 这个就是我们可以在字段是增加一层过滤器验证 ， 可以保证数据的合法性
+*   复杂类型封装，yml中可以封装对象 ， 使用value就不支持
+
+**结论：**
+
+*   配置yml和配置properties都可以获取到值 ， 强烈推荐 yml；
+*   如果我们在某个业务中，只需要获取配置文件中的某个值，可以使用一下 @value；
+*   如果说，我们专门编写了一个JavaBean来和配置文件进行一一映射，就直接@configurationProperties，不要犹豫！
+
+
+
+# 3 JRS303校验
+
+
+
+使用@Validate后，使用@Email的时候会报错，在pom.xml导入如下包
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+```
+
+
+
+在email加上注解@Email()，括号内的提示内容可以为空，写上更好，这样出错很容易看到是哪里错了！
+
+```java
+package com.ly.pojo;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.Email;
+
+@Data
+@Component // 注册bean
+@ConfigurationProperties(prefix = "student")
+@Validated // 数据校验
+public class Student {
+    private String firstName;
+    private String lastName;
+    @Email(message="邮箱格式错误") //name必须是邮箱格式
+    private String email;
+}
+```
+
+
+
+在application.yaml文件中注入的student信息如下
+
+```yaml
+student:
+  first-name: yang
+  last-name: li
+  email: 12306
+```
+
+
+
+测试程序（关注student即可，其它为前面的测试代码）
+
+```java
+package com.ly;
+
+import com.ly.pojo.Dog;
+import com.ly.pojo.Person;
+import com.ly.pojo.Student;
+import com.ly.pojo.User;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+
+/**
+ * liyang 2020-10-24
+ * 测试springboot的两种注入方式
+ */
+@SpringBootTest
+class Springboot02ConfigApplicationTests {
+
+    @Autowired
+    private Dog dog;
+
+    @Autowired
+    private Person person;
+
+    @Autowired
+    private User user;
+
+    @Autowired
+    private Student stu;
+
+    @Test
+    void contextLoads() {
+        System.out.println(dog);
+        System.out.println(person);
+        System.out.println(user);
+        System.out.println(stu);
+    }
+
+}
+```
+
+
+
+测试结果：因为邮箱在注入的时候没有按照邮箱格式，@Email()校验这个字段，并提示我们哪里出错！
+
+<img src="SpringBoot.assets/image-20201025230347913.png" alt="image-20201025230347913" style="zoom:50%;" />
+
+
+
+
+
+**使用数据校验，可以保证数据的正确性** 
+
+常见参数
+
+```java
+
+@NotNull(message="名字不能为空")
+private String userName;
+@Max(value=120,message="年龄最大不能查过120")
+private int age;
+@Email(message="邮箱格式错误")
+private String email;
+
+空检查
+@Null       验证对象是否为null
+@NotNull    验证对象是否不为null, 无法查检长度为0的字符串
+@NotBlank   检查约束字符串是不是Null还有被Trim的长度是否大于0,只对字符串,且会去掉前后空格.
+@NotEmpty   检查约束元素是否为NULL或者是EMPTY.
+    
+Booelan检查
+@AssertTrue     验证 Boolean 对象是否为 true  
+@AssertFalse    验证 Boolean 对象是否为 false  
+    
+长度检查
+@Size(min=, max=) 验证对象（Array,Collection,Map,String）长度是否在给定的范围之内  
+@Length(min=, max=) string is between min and max included.
+
+日期检查
+@Past       验证 Date 和 Calendar 对象是否在当前时间之前  
+@Future     验证 Date 和 Calendar 对象是否在当前时间之后  
+@Pattern    验证 String 对象是否符合正则表达式的规则
+
+.......等等
+除此以外，我们还可以自定义一些数据校验规则
+```
+
+[JSR-303](https://www.jianshu.com/p/554533f88370)
+
+
+
+<img src="SpringBoot.assets/image-20201025232336040.png" alt="image-20201025232336040" style="zoom:50%;" />

@@ -2,6 +2,7 @@ package com.ly;
 
 import com.ly.pojo.Dog;
 import com.ly.pojo.Person;
+import com.ly.pojo.Student;
 import com.ly.pojo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,15 @@ class Springboot02ConfigApplicationTests {
     @Autowired
     private User user;
 
+    @Autowired
+    private Student stu;
+
     @Test
     void contextLoads() {
         System.out.println(dog);
         System.out.println(person);
         System.out.println(user);
+        System.out.println(stu);
     }
 
 }

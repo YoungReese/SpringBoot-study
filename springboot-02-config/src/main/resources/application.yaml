@@ -17,3 +17,9 @@ person:
 
 users:
   name: god
+
+
+student:
+  first-name: yang
+  last-name: li
+  email: 12306@mail.com
