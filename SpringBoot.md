@@ -110,6 +110,8 @@ https://www.bootschool.net/ascii
 
 
 
+
+
 原理初探
 
 在pom.xml中，父工程parent中点击2.3.4.RELEASE，就会看到如下依赖，它是spring-boot的核心依赖！
@@ -523,3 +525,130 @@ Booelan检查
 
 
 <img src="SpringBoot.assets/image-20201025232336040.png" alt="image-20201025232336040" style="zoom:50%;" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 4 多环境切换
+
+profile是Spring对不同环境提供不同配置功能的支持，可以通过激活不同的环境版本，实现快速切换环境；
+
+## 多配置文件
+
+我们在主配置文件编写的时候，文件名可以是 application-{profile}.properties/yml , 用来指定多个环境版本；
+
+**例如：**
+
+application-test.properties 代表测试环境配置
+
+application-dev.properties 代表开发环境配置
+
+但是Springboot并不会直接启动这些配置文件，它**默认使用application.properties主配置文件**；
+
+我们需要通过一个配置来选择需要激活的环境：
+
+```properties
+#比如在配置文件中指定使用dev环境，我们可以通过设置不同的端口号进行测试；
+#我们启动SpringBoot，就可以看到已经切换到dev下的配置了；
+spring.profiles.active=dev
+```
+
+
+
+## yaml的多文档块
+
+和properties配置文件中一样，但是使用yml去实现不需要创建多个配置文件，更加方便了 !
+
+```yaml
+#默认端口
+server:
+  port: 8080
+  
+#选择要激活那个环境块
+spring:
+  profiles:
+    active: prod
+
+---
+server:
+  port: 8081
+spring:
+  profiles: dev   #配置环境的名称
+
+---
+server:
+  port: 8082
+spring:
+  profiles: prod  #配置环境的名称
+```
+
+**注意：如果yml和properties同时都配置了端口，并且没有激活其他环境 ， 默认会使用properties配置文件的！**
+
+
+
+## 配置文件加载位置
+
+**外部加载配置文件的方式十分多，我们选择最常用的即可，在开发的资源文件中进行配置！**
+
+官方外部配置文件说明参考文档
+
+老版
+
+[24. Externalized Configuration  -  Part IV. Spring Boot features ](https://docs.spring.io/spring-boot/docs/2.1.17.RELEASE/reference/html/boot-features-external-config.html)
+
+新版
+
+[Spring Boot Features](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features)
+
+
+
+Application Property Files
+
+<img src="SpringBoot.assets/image-20201026101116790.png" alt="image-20201026101116790" style="zoom:67%;" />
+
+优先级顺序1-5，如果1中有此属性，就会屏蔽2345中的相同属性
+
+```txt
+优先级
+1：项目路径下的config文件夹配置文件优先级
+2：项目路径下配置文件优先级
+3：资源路径下的config文件夹配置文件优先级
+4：资源路径下配置文件
+```
+
+优先级由高到底，高优先级的配置会覆盖低优先级的配置；
+
+**SpringBoot会从这四个位置全部加载主配置文件；互补配置；**
+
+我们在最低级的配置文件中设置一个项目访问路径的配置来测试互补问题；
+
+```properties
+#配置项目的访问路径
+server.servlet.context-path=/ly
+```
+
+
+
+## 拓展，运维小技巧
+
+指定位置加载配置文件
+
+我们还可以通过spring.config.location来改变默认的配置文件位置
+
+项目打包好以后，我们可以使用命令行参数的形式，启动项目的时候来指定配置文件的新位置；这种情况，一般是后期运维做的多，相同配置，外部指定的配置文件优先级最高（注意一下路径仅仅示意，具体根据个人实际项目名和路径来写）
+
+```java
+java -jar spring-boot-config.jar --spring.config.location=F:/application.properties
+```
+
