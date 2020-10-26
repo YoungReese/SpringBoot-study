@@ -8,6 +8,12 @@
 
 <!--所有的html元素都可以被 thymeleaf替换  th:元素名-->
 <div th:text="${msg}"></div>
+<div th:utext="${msg}"></div>
+
+<hr>
+
+<h3 th:each="user : ${users}" th:text="${user}"></h3>
+
 
 </body>
 </html>

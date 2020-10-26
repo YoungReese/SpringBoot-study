@@ -1076,3 +1076,24 @@ test.html中导入thymeleaf命名空间
 xmlns:th="http://www.thymeleaf.org"
 ```
 
+
+
+
+
+## 6.4 Thymeleaf语法
+
+<img src="SpringBoot.assets/image-20201026204252112.png" alt="image-20201026204252112" style="zoom:50%;" />
+
+
+
+```html
+<!--所有的html元素都可以被 thymeleaf替换  th:元素名-->
+<div th:text="${msg}"></div>
+<div th:utext="${msg}"></div>
+
+<hr>
+
+<h3 th:each="user : ${users}" th:text="${user}"></h3>
+```
+
+用th:text不会解析html，用th:utext会解析html，在页面中显示相应的样式

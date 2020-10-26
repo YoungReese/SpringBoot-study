@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Arrays;
+
 /**
  * liyang 2020-10-26
  * 页面跳转
@@ -20,7 +22,9 @@ public class IndexController {
 
     @RequestMapping("/test")
     public String index(Model model) {
-        model.addAttribute("msg","Hello Thymeleaf");
+        model.addAttribute("msg","<h1>Hello Thymeleaf</h1>");
+
+        model.addAttribute("users", Arrays.asList("liyang", "张三", "李四"));
         return "test";
     }
 
