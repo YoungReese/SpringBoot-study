@@ -819,3 +819,109 @@ debug=true
 
 [Spring4.x高级话题(四):条件注解@Conditional](https://juejin.im/entry/6844903507066093576)
 
+
+
+
+
+# 6 SpringBoot Web开发
+
+
+
+要解决的问题：
+
+*   导入静态资源
+*   首页显示
+*   jsp页面在Springboot中的解决方案-模版引擎Thymeleaf
+*   装配扩展SpringMVC
+*   增删改查crud
+*   拦截器
+*   国际化
+
+
+
+## 6.1 静态资源导入探究
+
+```java
+@RestController
+@GetMapping("/hello")
+```
+
+
+
+Would you like to install a shell script formatter?
+
+<img src="SpringBoot.assets/image-20201026142633095.png" alt="image-20201026142633095" style="zoom:50%;" />
+
+
+
+<img src="SpringBoot.assets/image-20201026151249980.png" alt="image-20201026151249980"  />
+
+WebMvcAutoConfiguration.java
+
+```java
+@Override
+public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    if (!this.resourceProperties.isAddMappings()) {
+        // 已禁用默认资源处理
+        logger.debug("Default resource handling disabled");
+        return;
+    }
+    // 缓存控制
+    Duration cachePeriod = this.resourceProperties.getCache().getPeriod();
+    CacheControl cacheControl = this.resourceProperties.getCache().getCachecontrol().toHttpCacheControl();
+    // webjars 配置
+    if (!registry.hasMappingForPattern("/webjars/**")) {															customizeResourceHandlerRegistration(registry.addResourceHandler("/webjars/**")                                                                                                                         			.addResourceLocations("classpath:/META-INF/resources/webjars/")                                    			   .setCachePeriod(getSeconds(cachePeriod)).setCacheControl(cacheControl));
+                                                       }
+    // 静态资源配置
+    String staticPathPattern = this.mvcProperties.getStaticPathPattern();
+    if (!registry.hasMappingForPattern(staticPathPattern)) {
+        customizeResourceHandlerRegistration(registry.addResourceHandler(staticPathPattern)                           			  .addResourceLocations(getResourceLocations(this.resourceProperties.getStaticLocations()))                                         			.setCachePeriod(getSeconds(cachePeriod)).setCacheControl(cacheControl));
+    }
+}
+```
+
+
+
+<img src="SpringBoot.assets/image-20201026143916556.png" alt="image-20201026143916556" style="zoom:50%;" />
+
+
+
+第1种
+
+拿到静态资源的方式
+
+```url
+http://localhost:8080/webjars/jquery/3.5.1/jquery.js
+```
+
+因为url中的/webjars/会映射到/classpath:/META-INF/resources/webjars/
+
+
+
+第2种
+
+静态资源放入项目资源路径，在url中至直接使用/静态资源名称即可！优先级如图所示。
+
+<img src="SpringBoot.assets/image-20201026150236863.png" alt="image-20201026150236863" style="zoom:50%;" />
+
+```url
+http://localhost:8080/hi.js
+```
+
+
+
+**注意：以上两种方式的前提是自己没有在yaml或者propertiers文件中定义spring.mvc.static-path-pattern**
+
+部分源码
+
+```java
+private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { 
+    "classpath:/META-INF/resources/",
+    "classpath:/resources/", 
+    "classpath:/static/", 
+    "classpath:/public/" 
+};
+```
+
+springboot默认让我们放在static下面，因此只有static文件夹，public和resources需要自己新建。
+
