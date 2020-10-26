@@ -844,6 +844,7 @@ debug=true
 ```java
 @RestController
 @GetMapping("/hello")
+@Controller
 ```
 
 
@@ -924,4 +925,97 @@ private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
 ```
 
 springboot默认让我们放在static下面，因此只有static文件夹，public和resources需要自己新建。
+
+
+
+## 6.2 首页问题
+
+WebMvcAutoConfiguration.java
+
+```java
+@Bean
+public WelcomePageHandlerMapping welcomePageHandlerMapping(ApplicationContext applicationContext,
+                                                           FormattingConversionService mvcConversionService, 															ResourceUrlProvider mvcResourceUrlProvider) {
+    
+    WelcomePageHandlerMapping welcomePageHandlerMapping = new WelcomePageHandlerMapping(
+        new TemplateAvailabilityProviders(applicationContext), applicationContext, getWelcomePage(),// 看这
+        this.mvcProperties.getStaticPathPattern());
+    welcomePageHandlerMapping.setInterceptors(getInterceptors(mvcConversionService, 
+                                                              mvcResourceUrlProvider));
+    welcomePageHandlerMapping.setCorsConfigurations(getCorsConfigurations());
+    return welcomePageHandlerMapping;
+}
+
+// getWelcomePage 获得欢迎页
+private Optional<Resource> getWelcomePage() {
+    // ::是java8 中新引入的运算符
+    // Class::function的时候function是属于Class的，应该是静态方法。
+    // this::function的funtion是属于这个对象的。
+    // 简而言之，就是一种语法糖而已，是一种简写
+    String[] locations = getResourceLocations(this.resourceProperties.getStaticLocations());
+    return Arrays.stream(locations).map(this::getIndexHtml).filter(this::isReadable).findFirst();
+}
+
+// 欢迎页就是一个location下的的 index.html 而已
+private Resource getIndexHtml(String location) {
+    return this.resourceLoader.getResource(location + "index.html");
+}
+
+private boolean isReadable(Resource resource) {
+    try {
+        return resource.exists() && (resource.getURL() != null);
+    }
+    catch (Exception ex) {
+        return false;
+    }
+}
+```
+
+
+
+图标（新版本Springboot已废弃，交由前端处理图标）
+
+自己放一个图标在静态资源目录下，我放在 public 目录下
+
+```properties
+#关闭默认图标
+spring.mvc.favicon.enabled=false
+```
+
+
+
+<img src="SpringBoot.assets/image-20201026174136909.png" alt="image-20201026174136909" style="zoom:50%;" />
+
+**注意：在谷歌中没有此图标，因为需要清理浏览器缓存，为了不影响谷歌浏览器记录的记录，这里使用safari打开即可**
+
+
+
+
+
+```java
+package com.ly.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * liyang 2020-10-26
+ * 页面跳转
+ * 在template下的所有页面，只有通过controller来跳转，需要模版引擎（thymeleaf）的支持！
+ *
+ * 现在把index.html从static中移动到template中
+ * 
+ * 这里无法测试
+ */
+
+@Controller
+public class IndexController {
+
+    @RequestMapping("/a")
+    public String index() {
+        return "index";
+    }
+
+}
+```
 
