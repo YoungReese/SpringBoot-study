@@ -1019,3 +1019,60 @@ public class IndexController {
 }
 ```
 
+
+
+
+
+
+
+## 6.3 模板引擎Thymeleaf
+
+前端交给我们的页面，是html页面。如果是我们以前开发，我们需要把他们转成jsp页面，jsp好处就是当我们查出一些数据转发到JSP页面以后，我们可以用jsp轻松实现数据的显示，及交互等。
+
+jsp支持非常强大的功能，包括能写Java代码，但是呢，我们现在的这种情况，SpringBoot这个项目首先是以jar的方式，不是war，像第二，我们用的还是嵌入式的Tomcat，所以呢，**他现在默认是不支持jsp的**。
+
+那不支持jsp，如果我们直接用纯静态页面的方式，那给我们开发会带来非常大的麻烦，那怎么办呢？
+
+**SpringBoot推荐你可以来使用模板引擎：**
+
+模板引擎，我们其实大家听到很多，其实jsp就是一个模板引擎，还有用的比较多的freemarker，包括SpringBoot给我们推荐的Thymeleaf，模板引擎有非常多，但再多的模板引擎，他们的思想都是一样的，什么样一个思想呢我们来看一下这张图：
+
+
+
+文档下载地址：https://www.thymeleaf.org/documentation.html
+
+
+
+新版本地址，没有pom连接，建议从老版本走，也就是下面的第2个链接
+
+[spring-boot-starter-thymeleaf](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-starter)
+
+从这个网站可以找到thymeleaf依赖，最终链接到github地址，不要在其他地方找
+
+https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/htmlsingle/#using-boot-starter 
+
+```xml
+<dependency>
+    <groupId>org.thymeleaf</groupId>
+    <artifactId>thymeleaf-spring5</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.thymeleaf.extras</groupId>
+    <artifactId>thymeleaf-extras-java8time</artifactId>
+</dependency>
+```
+
+
+
+**需要使用的时候，导入依赖即可**
+
+
+
+
+
+test.html中导入thymeleaf命名空间
+
+```html
+xmlns:th="http://www.thymeleaf.org"
+```
+
