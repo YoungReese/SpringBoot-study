@@ -1001,11 +1001,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * liyang 2020-10-26
  * 页面跳转
- * 在template下的所有页面，只有通过controller来跳转，需要模版引擎（thymeleaf）的支持！
+ * 在template下的所有页面，通过controller来跳转时，需要模版引擎（thymeleaf）的支持！
  *
  * 现在把index.html从static中移动到template中
  * 
- * 这里无法测试
+ * 这里无法测试，下文给出测试
  */
 
 @Controller
@@ -1097,3 +1097,188 @@ xmlns:th="http://www.thymeleaf.org"
 ```
 
 用th:text不会解析html，用th:utext会解析html，在页面中显示相应的样式
+
+
+
+实战
+
+```java
+package com.ly.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Arrays;
+
+/**
+ * liyang 2020-10-26
+ * 页面跳转
+ * 在template下的所有页面，通过controller来跳转时，需要模版引擎（thymeleaf）的支持！
+ *
+ * 在pom文件中导入依赖
+ *
+ * template中新建test.html
+ *
+ */
+
+@Controller
+public class IndexController {
+
+    @RequestMapping("/test")
+    public String index(Model model) {
+        model.addAttribute("msg","<h1>Hello Thymeleaf</h1>");
+
+        model.addAttribute("users", Arrays.asList("liyang", "张三", "李四"));
+        return "test";
+    }
+
+}
+```
+
+结果
+
+![image-20201027210235521](SpringBoot.assets/image-20201027210235521.png)
+
+
+
+
+
+## 6.5 MVC自动配置原理
+
+### 1、原理
+
+```java
+package com.ly.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.ViewResolver;
+
+import java.util.Locale;
+
+
+/**
+ * liyang 2020-10-27
+ * 在了解MVC自动装配原理后，如果你想自定义一些功能，
+ * 只要写完这个组件，然后将它交给你Springboot，他会帮我们自动装配！
+ *
+ * 扩展SpringMVC   dispatchServlet
+ */
+public class MyMvcConfig {
+
+    @Bean //放到bean中
+    public ViewResolver myViewResolver(){
+        return new MyViewResolver();
+    }
+
+    //我们写一个静态内部类，视图解析器就需要实现ViewResolver接口
+    private static class MyViewResolver implements ViewResolver{
+        @Override
+        public View resolveViewName(String s, Locale locale) throws Exception {
+            return null;
+        }
+    }
+
+}
+```
+
+怎么看我们自己写的视图解析器有没有起作用呢？
+
+我们给 DispatcherServlet 中的 doDispatch方法 加个断点进行调试一下，因为所有的请求都会走到这个方法中，然后启动我们的项目，然后随便访问一个页面，看一下Debug信息 -> 找到this -> 找到视图解析器，我们看到我们自己定义的就在这里了。
+
+![image-20201027204708885](SpringBoot.assets/image-20201027204708885.png)
+
+所以说，我们如果想要使用自己定制化的东西，我们只需要给容器中添加这个组件就好了！剩下的事情SpringBoot就会帮我们做了！
+
+
+
+
+
+### 2、格式转换 - 修改SpringBoot的默认配置
+
+WebMvcAutoConfiguration --> WebMvcProperties --> Format
+
+```java
+// 源码
+/**
+ * Date format to use, for example `dd/MM/yyyy`.
+ */
+ private String date;
+```
+
+
+
+properties文件
+
+```properties
+# 自定义的配置-日期格式化
+# springboot 中日期默认是 `dd/MM/yyyy`
+# spring.mvc.date-format  (本项目springboot 2.3.4版本已废弃该写法，使用下面这个写法)
+spring.mvc.format.date="yyyy-MM-dd"
+```
+
+
+
+```
+If you want to take complete control of Spring MVCyou can add your own @Configuration annotated with @EnableWebMvc.
+```
+
+全面接管即：SpringBoot对SpringMVC的自动配置不需要了，所有都是我们自己去配置！只需在我们的配置类上要加一个注解@EnableWebMvc。
+
+
+
+### 3、扩展MVC功能 - 修改SpringBoot的默认配置实战
+
+```java
+package com.ly.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Locale;
+
+
+
+/**
+ * liyang 2020-10-27
+ * 在了解MVC自动装配原理后，如果你想自定义一些功能，
+ * 只要写完这个组件，然后将它交给你Springboot，他会帮我们自动装配！
+ *
+ * 扩展SpringMVC   dispatchServlet
+ *
+ * 因为类型要求为WebMvcConfigurer，所以我们实现其接口
+ * 可以使用自定义类扩展MVC的功能
+ */
+@Configuration
+public class MyMvcConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        // 浏览器发送/ly ， 就会跳转到test页面。注：test.html前面创建的已存在的页面
+        registry.addViewController("/ly").setViewName("test");
+    }
+
+    // 以下代码是上次测试代码，可以删除，我暂时放在这，因为不影响上面这个函数的测试！
+    @Bean //放到bean中
+    public ViewResolver myViewResolver(){
+        return new MyViewResolver();
+    }
+
+    //我们写一个静态内部类，视图解析器就需要实现ViewResolver接口
+    private static class MyViewResolver implements ViewResolver{
+        @Override
+        public View resolveViewName(String s, Locale locale) throws Exception {
+            return null;
+        }
+    }
+
+}
+```
+
+![image-20201027205757839](SpringBoot.assets/image-20201027205757839.png)
+
