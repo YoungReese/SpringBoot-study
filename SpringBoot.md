@@ -1335,10 +1335,70 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
 # 7  员工管理系统
 
+## 7.1 项目搭建（准备工作）
+
 创建springboot-04-web02的时候选择了web、lombok、thymeleaf
+
+完成相关类编写和静态资源导入
+
+
+
+
+
+## 7.2 首页及其样式
 
 我在把静态资源路径的asserts去掉之后，静态资源可以正常加载进来，并没有使用thymeleaf语法，因此没有跟着视频改语法格式
 
 
 
 这里的资源路径是写死的，如果需要动态改变路径取值就需要thymeleaf语法
+
+
+
+
+
+## 7.3 国际化
+
+果然，出来混，迟早要还的，还是要加上th，使用前导入命名空间
+
+```html
+<!--放置位置如下-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+```
+
+然后加入th:语法
+
+*   url资源使用@{}
+
+*   变量使用#{}
+
+
+
+配置i8n文件
+
+中英文按钮切换，需要自定义一个LocaleResolver用于解析中英文参数，并将这个类写入MyMvcConfig中，使用@Bean注册到spring中（使用：@{}）！
+
+```html
+<a class="btn btn-sm" th:href="@{/index.html(lan='zh_CN')}">中文</a>
+<a class="btn btn-sm" th:href="@{/index.html(lan='en_US')}">English</a>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**热启动问题**
+
+dev-tools
+
+<img src="SpringBoot.assets/image-20201028235654179.png" alt="image-20201028235654179" style="zoom:50%;" />
