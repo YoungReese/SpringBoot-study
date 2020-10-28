@@ -1337,3 +1337,8 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
 创建springboot-04-web02的时候选择了web、lombok、thymeleaf
 
+我在把静态资源路径的asserts去掉之后，静态资源可以正常加载进来，并没有使用thymeleaf语法，因此没有跟着视频改语法格式
+
+
+
+这里的资源路径是写死的，如果需要动态改变路径取值就需要thymeleaf语法

@@ -38,9 +38,9 @@ public class EmployeeDao {
     private static Integer initId = 1005;
 
     // 增加一个员工
-    public void save(Employee employee) {
+    public void add(Employee employee) {
         if (employee.getId() == null) {
-            employee.setId(++initId);
+            employee.setId(++initId); // 模拟组件自增
         }
         employee.setDepartment(departmentDao.getDepartmentById(employee.getDepartment().getId()));
         employees.put(employee.getId(), employee);
