@@ -1401,6 +1401,12 @@ LoginController
 
 ## 7.5 登录器拦截
 
+LoginHandlerInterceptor
+
+然后MyMvcConfig需要重新写一个函数addInterceptors
+
+
+
 
 
 
