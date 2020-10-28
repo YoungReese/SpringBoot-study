@@ -20,7 +20,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/index.html").setViewName("index");
-
+        registry.addViewController("/main.html").setViewName("dashboard");
     }
 
     // 自定义的国际化组件在这里注册Bean后就生效了

@@ -1387,11 +1387,19 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
 
 
+## 7.4 登陆功能
+
+LoginController
+
+有个小问题，如下：
+
+<img src="SpringBoot.assets/image-20201029005749558.png" alt="image-20201029005749558" style="zoom:50%;" />
 
 
 
 
 
+## 7.5 登录器拦截
 
 
 
