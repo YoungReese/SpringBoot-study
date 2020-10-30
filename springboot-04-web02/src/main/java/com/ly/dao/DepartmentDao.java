@@ -37,8 +37,4 @@ public class DepartmentDao {
         return departments.get(id);
     }
 
-
-
-
-
 }

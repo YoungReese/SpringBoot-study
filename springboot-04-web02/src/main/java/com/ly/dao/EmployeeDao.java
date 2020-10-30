@@ -27,10 +27,10 @@ public class EmployeeDao {
     static {
         employees = new HashMap<>(); // 创建了一个部门表
         employees.put(1001, new Employee(1001, "A", "A12306@mail.com", 0, new Department(101, "教学部"), new Date()));
-        employees.put(1002, new Employee(1002, "B", "B12306@mail.com", 0, new Department(101, "市场部"), new Date()));
-        employees.put(1003, new Employee(1003, "C", "C12306@mail.com", 1, new Department(101, "教研部"), new Date()));
-        employees.put(1004, new Employee(1004, "D", "D12306@mail.com", 1, new Department(101, "运营部"), new Date()));
-        employees.put(1005, new Employee(1005, "E", "E12306@mail.com", 1, new Department(101, "后勤部"), new Date()));
+        employees.put(1002, new Employee(1002, "B", "B12306@mail.com", 0, new Department(102, "市场部"), new Date()));
+        employees.put(1003, new Employee(1003, "C", "C12306@mail.com", 1, new Department(103, "教研部"), new Date()));
+        employees.put(1004, new Employee(1004, "D", "D12306@mail.com", 1, new Department(104, "运营部"), new Date()));
+        employees.put(1005, new Employee(1005, "E", "E12306@mail.com", 1, new Department(105, "后勤部"), new Date()));
     }
 
 

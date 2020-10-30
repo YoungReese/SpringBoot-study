@@ -1592,8 +1592,114 @@ LoginHandlerInterceptor
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 **热启动问题**
 
 dev-tools
 
 <img src="SpringBoot.assets/image-20201028235654179.png" alt="image-20201028235654179" style="zoom:50%;" />
+
+
+
+
+
+![image-20201030105857889](SpringBoot.assets/image-20201030105857889.png)
+
+
+
+
+
+
+
+红线语法问题，但项目确实可以跑
+
+![image-20201030110837114](SpringBoot.assets/image-20201030110837114.png)
+
+
+
+
+
+
+
+
+
+```html
+<form th:action="@{/emp}" method="post">
+    <div class="form-group">
+        <lable>LastName</lable>
+        <input type="text" class="form-control" name="lastName">
+    </div>
+    <div class="form-group">
+        <lable>Email</lable>
+        <input type="email" class="form-control" name="email">
+    </div>
+    <div class="form-group">
+        <lable>Gender</lable>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="gender" value="1">
+            <lable class="form-check-label">男</lable>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="gender" value="0">
+            <lable class="form-check-label">女</lable>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>department</label>
+        <select class="form-control" name="department.id">
+            <option></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Birth</label>
+        <input type="text" class="form-control" name="birth" placeholder="2020-5-22">
+    </div>
+    <button type="submit" class="btn btn-primary">添加</button>
+</form>
+```
+
+
+
+
+
+
+
+
+
+bootstrap前端框架
+
+https://v3.bootcss.com/css/#forms
+
+
+
+
+
+
+
+如果前端传入参数，后端必须进行处理，否则就会出现reject情况！即后端拒绝了前端提交的参数！
+
+```java
+Validation failed for object='employee'. Error count: 1
+org.springframework.validation.BindException: org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'employee' on field 'department': rejected value [Department(id=101, departmentName=教学部)]; codes [typeMismatch.employee.department,typeMismatch.department,typeMismatch.com.ly.pojo.Department,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [employee.department,department]; arguments []; default message [department]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'com.ly.pojo.Department' for property 'department'; nested exception is java.lang.IllegalStateException: Cannot convert value of type 'java.lang.String' to required type 'com.ly.pojo.Department' for property 'department': no matching editors or conversion strategy found]
+```
+
+
+
+
+
+
+
+![image-20201030175257914](SpringBoot.assets/image-20201030175257914.png)
+
