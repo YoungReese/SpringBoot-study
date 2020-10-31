@@ -256,7 +256,7 @@ With Maven the dependency should be declared as optional, as shown in the follow
 @Component //注册bean
 @ConfigurationProperties(prefix = "users")
 public class User {
-    //直接使用@value
+    //直接使用@Value
     @Value("${users.name}") // 从配置文件中取值，因为配置的@ConfigurationProperties，可以让其自动装配，因此可以省略
     private String name;
     @Value("#{9 * 2}")     // #{SPEL} Spring表达式
@@ -1702,4 +1702,17 @@ Field error in object 'employee' on field 'department': rejected value [Departme
 
 
 ![image-20201030175257914](SpringBoot.assets/image-20201030175257914.png)
+
+
+
+
+
+前端：
+
+*   模板：模板之家，x-admin
+*   框架：组件的拼接（Bootstrap、Layui、sematic-ui）
+
+资源获取：
+
+
 
