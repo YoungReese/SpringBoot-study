@@ -14,6 +14,11 @@ class Springboot05DataApplicationTests {
     @Autowired
     DataSource dataSource;
 
+    /**
+     * liyang 2020-11-01
+     * 测试数据库的连接的一些信息
+     * @throws SQLException
+     */
     @Test
     void contextLoads() throws SQLException {
         // 查看一下默认的数据源：class com.zaxxer.hikari.HikariDataSource
@@ -29,7 +34,6 @@ class Springboot05DataApplicationTests {
         // redis Template
 
         connection.close();
-
     }
 
 }
