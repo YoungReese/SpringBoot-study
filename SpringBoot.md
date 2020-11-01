@@ -1716,3 +1716,49 @@ Field error in object 'employee' on field 'department': rejected value [Departme
 
 
 
+# 8 整合JBDC
+
+
+
+# 9 整合Druid数据源
+
+
+
+上传github出现
+
+<img src="SpringBoot.assets/image-20201101151326001.png" alt="image-20201101151326001" style="zoom:50%;" />
+
+
+
+<img src="SpringBoot.assets/image-20201101151359698.png" alt="image-20201101151359698" style="zoom:50%;" />
+
+
+
+<img src="SpringBoot.assets/image-20201101151257992.png" alt="image-20201101151257992" style="zoom:50%;" />
+
+
+
+大意是，log4j 1.2到1.2.7版本存在一个一个漏洞，容易被序列化
+
+
+
+因此我的解决方法是，本地使用，但不存到github，因此先删掉pom.xml中的依赖然后提交，然后重新放进来并在.gitignore中忽略它！
+
+
+
+log4j.jar
+
+```xml
+<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+<dependency>
+    <groupId>log4j</groupId>
+    <artifactId>log4j</artifactId>
+    <version>1.2.17</version>
+</dependency>
+```
+
+注意：实际在这个项目当前进度就是配置了一下，并没有正真的使用！
+
+
+
+# 10 整合MyBatis框架
