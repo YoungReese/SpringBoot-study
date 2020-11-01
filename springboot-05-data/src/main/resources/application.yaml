@@ -23,7 +23,9 @@ spring:
     # 配置监控统计拦截的filters，stat：监控统计、log4j：日志记录、wall：防御sql注入
     # 如果允许报错，java.lang.ClassNotFoundException: org.apache.Log4j.Properity
     # 则导入log4j 依赖就行
-    filters: stat,wall,log4j
+    # filters: stat,wall,log4j
+    # filters: stat,wall （注：实际没使用log4j，所以这里可以不加）
+    filters: stat,wall
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionoProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
