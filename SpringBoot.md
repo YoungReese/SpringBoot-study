@@ -1764,3 +1764,54 @@ log4j.jar
 
 
 # 10 整合MyBatis框架
+
+在Spring中整合mybatis，使用mybatis-spring
+
+在springboot中整合mybatis，使用mybatis-spring-boot-starter
+
+
+
+步骤：
+
+1、导入包
+
+2、配置文件
+
+3、mybatis配置
+
+4、编写sql
+
+5、service层调用dao层
+
+6、controller层调用service层
+
+
+
+
+
+区别：
+
+```java
+@MapperScan()
+@MapperScans()
+```
+
+<img src="SpringBoot.assets/image-20201101220440123.png" alt="image-20201101220440123" style="zoom:50%;" />
+
+
+
+<img src="SpringBoot.assets/image-20201101220459825.png" alt="image-20201101220459825" style="zoom:50%;" />
+
+mappercans可以存多个mapperscan
+
+
+
+
+
+[@Component, @Repository, @Service的区别](https://blog.csdn.net/fansili/article/details/78740877)
+
+```java
+@Repository
+@Component
+```
+
