@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+log4j.jar
+
 ### STS ###
 .apt_generated
 .classpath

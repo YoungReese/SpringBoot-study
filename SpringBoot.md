@@ -1746,6 +1746,8 @@ Field error in object 'employee' on field 'department': rejected value [Departme
 
 
 
+
+
 log4j.jar
 
 ```xml
@@ -1757,7 +1759,7 @@ log4j.jar
 </dependency>
 ```
 
-注意：实际在这个项目当前进度就是配置了一下，并没有正真的使用！
+注意：实际在这个项目当前进度就是配置了一下，并没有正真的使用，由于本次删除，下次在别的地方clone下来使用的时候需要加上log4j（springboot-05-data）！
 
 
 
