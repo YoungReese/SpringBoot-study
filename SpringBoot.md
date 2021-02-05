@@ -1813,5 +1813,70 @@ mappercans可以存多个mapperscan
 ```java
 @Repository
 @Component
+
+
+~/资源库/Android/sdk/platform-tools
+
+export PATH=${PATH}:~/Library/Android/sdk/platform-tools
+    
+    
+
+```
+
+
+
+
+
+```bash
+127.0.0.1:6379> setbit sign 0 1
+(integer) 0
+127.0.0.1:6379> setbit sign 1 0
+(integer) 0
+127.0.0.1:6379> setbit sign 2 1
+(integer) 0
+127.0.0.1:6379> setbit sign 3 0
+(integer) 0
+127.0.0.1:6379> setbit sign 4 1
+(integer) 0
+127.0.0.1:6379> setbit sign 5 1
+(integer) 0
+127.0.0.1:6379> getbit sign 4
+(integer) 1
+127.0.0.1:6379> getbit sign 1
+(integer) 0
+127.0.0.1:6379> getbit sign 3
+(integer) 0
+127.0.0.1:6379> bitcount sign
+(integer) 4
+127.0.0.1:6379> 
+```
+
+
+
+在我们的springboot开发中，所有的pojo类都会被序列化
+
+```java
+// example
+public class User implements Serializable {...}
+```
+
+
+
+@Qualifier("xxx")
+
+
+
+
+
+
+
+```bash
+ By default Redis does not run as a daemon. Use 'yes' if you need it.
+# Note that Redis will write a pid file in /usr/local/var/run/redis.pid when daemonized.
+daemonize no
+
+
+# rdb文件保存的目录！
+dir /usr/local/var/db/redis/
 ```
 

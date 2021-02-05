@@ -27,28 +27,28 @@ public class UserController {
         return users;
     }
 
-    @GetMapping("/query/{id}")
-    public User queryUserById(@PathVariable("id") int id) {
-        return userMapper.queryUserById(id);
-    }
-
-    @GetMapping("/add")
-    public String addUser() {
-        userMapper.addUser(new User(9, "helloworld", "123"));
-        return "ok";
-    }
-
-    @GetMapping("/update")
-    public String updateUser() {
-        userMapper.updateUser(new User(9, "mybatis-sp", "456"));
-        return "ok";
-    }
-
-    @GetMapping("/delete")
-    public String deleteUser() {
-        userMapper.deleteUser(9);
-        return "ok";
-    }
+//    @GetMapping("/query/{id}")
+//    public User queryUserById(@PathVariable("id") int id) {
+//        return userMapper.queryUserById(id);
+//    }
+//
+//    @GetMapping("/add")
+//    public String addUser() {
+//        userMapper.addUser(new User(9, "helloworld", "123"));
+//        return "ok";
+//    }
+//
+//    @GetMapping("/update")
+//    public String updateUser() {
+//        userMapper.updateUser(new User(9, "mybatis-sp", "456"));
+//        return "ok";
+//    }
+//
+//    @GetMapping("/delete")
+//    public String deleteUser() {
+//        userMapper.deleteUser(9);
+//        return "ok";
+//    }
 
 
 }
