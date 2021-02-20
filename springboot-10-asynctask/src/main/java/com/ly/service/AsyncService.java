@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 异步任务
+ */
 @Service
 public class AsyncService {
 
