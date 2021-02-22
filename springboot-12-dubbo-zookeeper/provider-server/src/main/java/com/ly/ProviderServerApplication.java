@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * 步骤1（有jar包，跳过此步骤）：
  * 没有dubbo-admin客户端的jar包（有jar包，跳过此步骤）
- * 下载地址：https://github.com/apache/dubbo
+ * 下载地址：https://github.com/apache/dubbo-admin/tree/master
  *
  * 步骤2（有jar包，跳过此步骤）：
  * 解压后在项目目录下打包dubbo-admin：
