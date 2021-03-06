@@ -54,6 +54,7 @@ public class UserService {
             users = userMapper.queryUsers();
             cacheIntoRedisAsyncTask(users);        // 异步更新redis
         }
+        System.out.println(users);
         return users;
     }
 

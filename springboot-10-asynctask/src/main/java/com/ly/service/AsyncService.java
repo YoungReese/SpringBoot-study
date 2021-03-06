@@ -19,7 +19,7 @@ public class AsyncService {
     public void simpleAsyncTask() {
         try { // 模拟一个延时操作
             System.out.println("Data is processing ...");
-            TimeUnit.MILLISECONDS.sleep(3000);
+            TimeUnit.MILLISECONDS.sleep(30000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

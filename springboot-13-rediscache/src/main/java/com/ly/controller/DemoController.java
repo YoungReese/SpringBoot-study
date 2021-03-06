@@ -37,7 +37,9 @@ public class DemoController {
 
     @GetMapping("/q")
     public List<User> queryUsers() {
-        return userMapper.queryUsers();
+        List<User> users = userMapper.queryUsers();
+        System.out.println(users);
+        return users;
     }
 
 }
