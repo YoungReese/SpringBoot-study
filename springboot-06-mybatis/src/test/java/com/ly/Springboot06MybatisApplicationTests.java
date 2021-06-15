@@ -1,5 +1,6 @@
 package com.ly;
 
+import com.ly.mapper.RuleConfigMapper;
 import com.ly.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
@@ -32,4 +33,12 @@ class Springboot06MybatisApplicationTests {
         System.out.println(userMapper.queryUsers());
     }
 
+    @Autowired
+    RuleConfigMapper ruleConfigMapper;
+
+    @Test
+    void testQuery() {
+        System.out.println(ruleConfigMapper.fuzzyQueryByAlarmUser("zhangsan"));
+        System.out.println(ruleConfigMapper.fuzzyQueryByAlarmPhone("18822224444"));
+    }
 }
