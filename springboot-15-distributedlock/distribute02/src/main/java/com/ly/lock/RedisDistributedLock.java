@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import static com.ly.constant.RedisKeyConstant.REDIS_DISTRIBUTE_LOCK_KEY;
 
@@ -20,7 +21,8 @@ public class RedisDistributedLock {
          */
         if(stringRedisTemplate.opsForValue().setIfAbsent(REDIS_DISTRIBUTE_LOCK_KEY, "1")){
             // 对应setnx命令，可以成功设置,也就是key不存在
-            stringRedisTemplate.expire(REDIS_DISTRIBUTE_LOCK_KEY, Duration.ofSeconds(60)); // 60秒
+//            stringRedisTemplate.expire(REDIS_DISTRIBUTE_LOCK_KEY, Duration.ofSeconds(60)); // 60秒
+            stringRedisTemplate.expire(REDIS_DISTRIBUTE_LOCK_KEY, 60, TimeUnit.SECONDS); // 60秒
             return true;
         } else {
             stringRedisTemplate.expire(REDIS_DISTRIBUTE_LOCK_KEY, Duration.ofSeconds(60)); // 60秒

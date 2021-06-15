@@ -1,13 +1,10 @@
 package com.ly.controller;
 
-import com.ly.lock.RedisDistributedLock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @RestController
 public class DistributedController {
@@ -17,4 +14,22 @@ public class DistributedController {
         return "hello, distribute02";
     }
 
+    /**
+     * 测试url传参数
+     */
+    @GetMapping("/calculate")
+    public String calculate(@RequestParam(value = "x", required = false, defaultValue = "0") Integer x,
+                            @RequestParam(value = "y", required = false, defaultValue = "0") Integer y) {
+        int a = x.intValue();
+        int b = y.intValue();
+
+        String res = "past";
+        if (a + b > 2021) {
+            res = "future";
+        } else if (a + b == 2021) {
+            res = "now";
+        }
+
+        return res;
+    }
 }
